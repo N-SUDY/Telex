@@ -275,7 +275,7 @@ BOT_THEME = getVar("BOT_THEME", "fx-optimised-theme")
 FSUB_CHANNEL = getVar("FSUB_CHANNEL", "")
 
 # Quotes in Restart Message & Utils >>>>>>>>
-TIMEZONE = getVar("TIMEZONE", "Asia/Kolkata")
+TIMEZONE = getVar("TIMEZONE", "Asia/Tokyo")
 RDM_QUOTE = getVar("RDM_QUOTE", "False")
 RDM_QUOTE = RDM_QUOTE.lower() == "true"
 
