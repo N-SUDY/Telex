@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+#
+# This file is part of Tele-LeechX: https://github.com/SilentDemonSD/Tele-LeechX
+# Copyright (c) 2022-2023 SilentDemonSD.
+# All rights reserved.
+
+# Define an associative array to map file extensions to extraction commands
+declare -A ext_map=(
+  ["tar.bz2"]="tar xjf"
+  ["tar.gz"]="tar xzf"
+  ["bz2"]="bunzip2"
+  ["gz"]="gunzip"
+  ["tar"]="tar xf"
+  ["tbz2"]="tar xjf"
+  ["tgz"]="tar xzf"
+  ["tar.xz"]="tar xf"
+  ["zip"]="unzip"
+  ["7z"]="7z x"
+  ["Z"]="uncompress"
+  ["rar"]="7z x"
+  ["iso"]="7z x"
+  ["wim"]="7z x"
+  ["cab"]="7z x"
+  ["apm"]="7z x"
+  ["arj"]="7z x"
+  ["chm"]="7z x"
+  ["cpio"]="7z x"
+  ["cramfs"]="7z x"
+  ["deb"]="7z x"
+  ["dmg"]="7z x"
+  ["fat"]="7z x"
+  ["hfs"]="7z x"
+  ["lzh"]="7z x"
+  ["lzma"]="7z x"
+  ["lzma2"]="7z x"
+  ["mbr"]="7z x"
+  ["msi"]="7z x"
+  ["mslz"]="7z x"
+  ["nsis"]="7z x"
+  ["rpm"]="rpm2cpio | cpio -idmv"
+)
+
+# Check if any files were provided as arguments
+if [ $# -lt 1 ]; then
+  echo "Usage: $(basename $0) FILES"
+  exit 1
+fi
+
+# Loop through each argument and extract the files
+for arg in "$@"; do
+  if [ ! -f "$arg" ]; then
+    echo "File '$arg' not found"
+    continue
+  fi
+
+  # Get the file extension
+  ext="${arg##*.}"
+
+  # Check if the extension is supported
+  if [ -z "${ext_map[$ext]}" ]; then
+    echo "Unsupported file format: $arg"
+    continue
+  fi
+
+  # Extract the files
+  dir="$(dirname "$arg")"
+  cmd="${ext_map[$ext]} '$arg'"
+  (cd "$dir" && eval "$cmd")
+  if [ $? -ne 0 ]; then
+    echo "Extraction failed: $arg"
+    continue
+  fi
+
+  echo "Extracted: $arg"
+done
