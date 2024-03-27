@@ -29,5 +29,5 @@ requests
 speedtest-cli
 telegraph
 tgcrypto
-urllib3
+urllib3==1.26
 yt-dlp
